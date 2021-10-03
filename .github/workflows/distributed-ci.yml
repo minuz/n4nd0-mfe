@@ -1,0 +1,71 @@
+name: Distributed CI
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+env:
+  NX_CLOUD_DISTRIBUTED_EXECUTION: true
+
+jobs:
+  master:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' }}
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout [master]
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+      - run: yarn --frozen-lockfile
+      - run: npx nx-cloud start-ci-run
+      - run: yarn nx affected:test --parallel --max-parallel=3 --base=origin/master
+      - run: yarn nx affected:lint --parallel --max-parallel=2 --base=origin/master
+      - run: yarn nx affected:e2e --parallel --max-parallel=2 --base=origin/master
+      - run: yarn nx affected:build --parallel --max-parallel=2 --base=origin/master
+      - name: Ensure termination of all agents
+        if: always()
+        run: npx nx-cloud stop-all-agents
+  pr:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+      - run: yarn --frozen-lockfile
+      - run: npx nx-cloud start-ci-run
+      - run: yarn nx affected:test --parallel --max-parallel=3 --base=origin/master
+      - run: yarn nx affected:lint --parallel --max-parallel=2 --base=origin/master
+      - run: yarn nx affected:e2e --parallel --max-parallel=2 --base=origin/master
+      - run: yarn nx affected:build --parallel --max-parallel=2 --base=origin/master
+      - name: Ensure termination of all agents
+        if: always()
+        run: npx nx-cloud stop-all-agents
+  agents:
+    runs-on: ubuntu-latest
+    name: NX Agent
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        agent: [1, 2, 3]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+      - run: yarn --frozen-lockfile
+      - name: Start Nx Agent ${{ matrix.agent }}
+        run: npx nx-cloud start-agent
