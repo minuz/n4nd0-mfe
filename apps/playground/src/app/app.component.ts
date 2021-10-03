@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'n4nd0-mfe-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  selector: 'n4nd0-playground',
+  template: `<h1>Welcome to {{ title }}!</h1> `,
 })
 export class AppComponent {
   title = 'playground';
