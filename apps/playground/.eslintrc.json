@@ -4,16 +4,13 @@
   "overrides": [
     {
       "files": ["*.ts"],
-      "extends": [
-        "plugin:@nrwl/nx/angular",
-        "plugin:@angular-eslint/template/process-inline-templates"
-      ],
+      "extends": ["plugin:@nrwl/nx/angular", "plugin:@angular-eslint/template/process-inline-templates"],
       "rules": {
         "@angular-eslint/directive-selector": [
           "error",
           {
             "type": "attribute",
-            "prefix": "n4nd0Mfe",
+            "prefix": "n4nd0",
             "style": "camelCase"
           }
         ],
@@ -21,7 +18,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "n4nd0-mfe",
+            "prefix": "n4nd0",
             "style": "kebab-case"
           }
         ]
