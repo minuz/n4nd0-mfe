@@ -5,7 +5,7 @@
       "projectType": "application",
       "root": "apps/playground",
       "sourceRoot": "apps/playground/src",
-      "prefix": "n4nd0-mfe",
+      "prefix": "n4nd0",
       "targets": {
         "build": {
           "executor": "@nrwl/angular:webpack-browser",
@@ -16,10 +16,7 @@
             "main": "apps/playground/src/main.ts",
             "polyfills": "apps/playground/src/polyfills.ts",
             "tsConfig": "apps/playground/tsconfig.app.json",
-            "assets": [
-              "apps/playground/src/favicon.ico",
-              "apps/playground/src/assets"
-            ],
+            "assets": ["apps/playground/src/favicon.ico", "apps/playground/src/assets"],
             "styles": ["apps/playground/src/styles.css"],
             "scripts": [],
             "customWebpackConfig": {
@@ -86,10 +83,7 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/playground/src/**/*.ts",
-              "apps/playground/src/**/*.html"
-            ]
+            "lintFilePatterns": ["apps/playground/src/**/*.ts", "apps/playground/src/**/*.html"]
           }
         },
         "test": {
