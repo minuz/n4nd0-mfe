@@ -31,7 +31,7 @@ jobs:
         cache: 'npm'
     - run: git fetch --no-tags --prune --depth=5 origin master
     - run: yarn --frozen-lockfile
-    - run: yarn nx affected:lint
-    - run: yarn nx affected:test
-    - run: yarn nx affected:e2e
-    - run: yarn nx affected:apps
+    - run: yarn nx affected:lint --base=origin/master
+    - run: yarn nx affected:test --base=origin/master
+    - run: yarn nx affected:e2e --base=origin/master
+    - run: yarn nx affected:build --base=origin/master
